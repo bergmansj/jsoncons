@@ -17,13 +17,23 @@
 
 using namespace jsoncons;
 
+namespace jsoncons { namespace jsonschema {
+
+void validate(jsonschema::validator& validator, const std::string& jtext)    
+{
+    json j = json::parse(jtext);
+    j.dump(validator);
+}
+
+}}
+
 TEST_CASE("jsonschema tests")
 {
     std::string s = "{}";
-    json j = json::parse(s);
+    json schema = json::parse(s);
 
-    jsonschema::validator validator(std::move(j)); 
+    jsonschema::validator validator(std::move(schema)); 
+    jsonschema::validate(validator, "42");
 
-    j.dump(validator);
 }
 
