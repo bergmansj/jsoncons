@@ -15,24 +15,26 @@
 
 using namespace jsoncons;
 
-namespace ns {
+namespace jsoncons_member_traits_decl_tests {
 
-struct book
-{
-    std::string author;
-    std::string title;
-    double price;
-
-    friend std::ostream& operator<<(std::ostream& os, const book& b)
+    struct book
     {
-        std::cout << "author: " << b.author << ", title: " << b.title << ", price: " << b.price << "\n";
-        return os;
-    }
-};
+        std::string author;
+        std::string title;
+        double price;
+
+        friend std::ostream& operator<<(std::ostream& os, const book& b)
+        {
+            std::cout << "author: " << b.author << ", title: " << b.title << ", price: " << b.price << "\n";
+            return os;
+        }
+    };
+} // namespace jsoncons_member_traits_decl_tests
+
+namespace ns = jsoncons_member_traits_decl_tests;
 
 JSONCONS_MEMBER_TRAITS_DECL(ns::book,author,title,price);
 
-} // namespace ns
 
 TEST_CASE("JSONCONS_MEMBER_TRAITS_DECL tests")
 {
