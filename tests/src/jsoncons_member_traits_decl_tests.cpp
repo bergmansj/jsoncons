@@ -24,19 +24,33 @@ namespace jsoncons_member_traits_decl_tests {
         double price;
     };
 
-    struct book2
+    class book2
     {
-        std::string author;
-        std::string title;
+        std::string author_;
+        std::string title_;
+    public:
+        book2(const std::string& author, const std::string& title)
+            : author_(author), title_(title)
+        {
+        }
+        std::string author() const
+        {
+            return author_;
+        }
+
+        std::string title() const
+        {
+            return title_;
+        }
+
     };
 } // namespace jsoncons_member_traits_decl_tests
-
+ 
 namespace ns = jsoncons_member_traits_decl_tests;
 
 JSONCONS_MEMBER_TRAITS_DECL(ns::book,author,title,price);
 
-JSONCONS_MEMBER_TRAITS_DECL(ns::book2,author,title);
-
+JSONCONS_ACONS_TRAITS_DECL(ns::book2,author,title);
 
 TEST_CASE("JSONCONS_MEMBER_TRAITS_DECL tests")
 {
