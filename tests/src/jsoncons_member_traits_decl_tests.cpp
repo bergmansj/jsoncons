@@ -22,12 +22,12 @@ namespace jsoncons_member_traits_decl_tests {
         std::string author;
         std::string title;
         double price;
+    };
 
-        friend std::ostream& operator<<(std::ostream& os, const book& b)
-        {
-            std::cout << "author: " << b.author << ", title: " << b.title << ", price: " << b.price << "\n";
-            return os;
-        }
+    struct book2
+    {
+        std::string author;
+        std::string title;
     };
 } // namespace jsoncons_member_traits_decl_tests
 
@@ -35,14 +35,47 @@ namespace ns = jsoncons_member_traits_decl_tests;
 
 JSONCONS_MEMBER_TRAITS_DECL(ns::book,author,title,price);
 
+JSONCONS_MEMBER_TRAITS_DECL(ns::book2,author,title);
+
 
 TEST_CASE("JSONCONS_MEMBER_TRAITS_DECL tests")
 {
-    ns::book book_list{"Haruki Murakami", "Kafka on the Shore", 25.17};
+    std::string author = "Haruki Murakami"; 
+    std::string title = "Kafka on the Shore";
+    double price = 25.17;
 
-    std::string s;
-    encode_json(book_list, s, indenting::indent);
+    ns::book book{author, title, price};
+    ns::book2 book2{author, title};
 
-    std::cout << "s: " << s << "\n";
+    SECTION("book")
+    {
+        std::string s;
+
+        encode_json(book, s);
+
+        json j = decode_json<json>(s);
+
+        REQUIRE(j.is<ns::book>() == true);
+        REQUIRE(j.is<ns::book2>() == true);
+
+        CHECK(j["author"].as<std::string>() == author);
+        CHECK(j["title"].as<std::string>() == title);
+        CHECK(j["price"].as<double>() == Approx(price).epsilon(0.001));
+    }
+
+    SECTION("book2")
+    {
+        std::string s;
+
+        encode_json(book2, s);
+
+        json j = decode_json<json>(s);
+
+        REQUIRE(j.is<ns::book2>() == true);
+        REQUIRE(j.is<ns::book>() == false);
+
+        CHECK(j["author"].as<std::string>() == author);
+        CHECK(j["title"].as<std::string>() == title);
+    }
 }
 
