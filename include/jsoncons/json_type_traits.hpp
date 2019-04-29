@@ -1158,8 +1158,8 @@ namespace jsoncons \
 #define JSONCONS_TO_JSON2(TC, JV, Type, V, Member) (JV).try_emplace(JSONCONS_QUOTE(Member), V.Member ## () );
 #define JSONCONS_TO_JSON2_LAST(TC, JV, Type, V, Member) (JV).try_emplace(JSONCONS_QUOTE(Member), V.Member ## () );
 
-#define JSONCONS_AS2(TC, JV, Type, V, Member) (JV).at(JSONCONS_QUOTE(Member)).template as<decltype(V.Member ## () )>(),
-#define JSONCONS_AS2_LAST(TC, JV, Type, V, Member) (JV).at(JSONCONS_QUOTE(Member)).template as<decltype(V.Member ## () )>()
+#define JSONCONS_AS2(TC, JV, Type, V, Member) (JV).at(JSONCONS_QUOTE(Member)).template as<decltype(std::declval<Type>().Member ## () )>(),
+#define JSONCONS_AS2_LAST(TC, JV, Type, V, Member) (JV).at(JSONCONS_QUOTE(Member)).template as<decltype(std::declval<Type>().Member ## () )>()
 
 #define JSONCONS_ACONS_TRAITS_DECL_BASE(Count, ValueType, ...)  \
 namespace jsoncons \
@@ -1177,7 +1177,7 @@ namespace jsoncons \
         static ValueType as(const Json& j) \
         { \
             ValueType val{ \
-            JSONCONS_REP_N(JSONCONS_AS2, Count, j, ValueType, val, __VA_ARGS__) \
+            JSONCONS_REP_N(JSONCONS_AS2, Count, j, ValueType, true, __VA_ARGS__) \
             }; \
             return val; \
         } \
