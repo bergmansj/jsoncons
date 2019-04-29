@@ -108,7 +108,10 @@ TEST_CASE("JSONCONS_MEMBER_TRAITS_DECL tests")
 
         CHECK(j == j2);
 
-        ns::book2 val = j.as<ns::book2>();
+        // ns::book2 val = j.as<ns::book2>();
+
+        std::string s1;
+        decltype(std::declval<ns::book2>().author()) s2 = s1;
     }
 }
 

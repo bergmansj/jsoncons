@@ -1151,6 +1151,7 @@ namespace jsoncons \
 #define JSONCONS_MEMBER_TRAITS_DECL(ValueType,...) \
     JSONCONS_MEMBER_TRAITS_DECL_BASE(0, ValueType, __VA_ARGS__)
 
+#define XXX ()
 
 #define JSONCONS_IS2(TC, JV, Type, V, Member) JSONCONS_EXPAND(V = V && (JV).contains(JSONCONS_QUOTE(Member)));
 #define JSONCONS_IS2_LAST(TC, JV, Type, V, Member) JSONCONS_EXPAND(V = V && (JV).contains(JSONCONS_QUOTE(Member)));
@@ -1158,8 +1159,8 @@ namespace jsoncons \
 #define JSONCONS_TO_JSON2(TC, JV, Type, V, Member) (JV).try_emplace(JSONCONS_QUOTE(Member), V.Member ## () );
 #define JSONCONS_TO_JSON2_LAST(TC, JV, Type, V, Member) (JV).try_emplace(JSONCONS_QUOTE(Member), V.Member ## () );
 
-#define JSONCONS_AS2(TC, JV, Type, V, Member) (JV).at(JSONCONS_QUOTE(Member)).template as<decltype(std::declval<Type>().Member ## () )>(),
-#define JSONCONS_AS2_LAST(TC, JV, Type, V, Member) (JV).at(JSONCONS_QUOTE(Member)).template as<decltype(std::declval<Type>().Member ## () )>()
+#define JSONCONS_AS2(TC, JV, Type, V, Member) (JV).at(JSONCONS_QUOTE(Member)).template as<decltype(std::declval<Type>().Member ## XXX )>(),
+#define JSONCONS_AS2_LAST(TC, JV, Type, V, Member) (JV).at(JSONCONS_QUOTE(Member)).template as<decltype(std::declval<Type>().Member ## XXX )>()
 
 #define JSONCONS_ACONS_TRAITS_DECL_BASE(Count, ValueType, ...)  \
 namespace jsoncons \
