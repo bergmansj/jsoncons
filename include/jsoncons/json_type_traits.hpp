@@ -104,7 +104,7 @@ struct is_compatible_string_type : std::false_type {};
 template<class Json, class T>
 struct is_compatible_string_type<Json,T, 
     typename std::enable_if<!std::is_same<T,typename Json::array>::value &&
-    jsoncons::detail::is_string_like<T>::value && 
+    jsoncons::detail::is_string_like<typename std::decay<T>::type>::value && 
     !is_incompatible<Json,typename std::iterator_traits<typename T::iterator>::value_type>::value
 >::type> : std::true_type {};
 
@@ -1147,7 +1147,7 @@ namespace jsoncons \
         } \
     }; \
 } // jsoncons 
-
+ 
 #define JSONCONS_MEMBER_TRAITS_DECL(ValueType,...) \
     JSONCONS_MEMBER_TRAITS_DECL_BASE(0, ValueType, __VA_ARGS__)
 

@@ -8,64 +8,92 @@
 #include <iomanip>
 #include <jsoncons/json.hpp>
 
-using namespace jsoncons;
-
 namespace ns {
-    struct book
+    struct employee
     {
-        std::string author;
+        std::string employeeNo;
+        std::string name;
         std::string title;
-        double price;
+    };
+
+    class book
+    {
+        std::string author_;
+        std::string title_;
+        double price_;
+    public:
+        book(const std::string& author, const std::string& title, double price)
+            : author_(author), title_(title), price_(price)
+        {
+        }
+        const std::string& author() const
+        {
+            return author_;
+        }
+
+        const std::string& title() const
+        {
+            return title_;
+        }
+
+        double price() const
+        {
+            return price_;
+        }
+
     };
 } // namespace ns
 
 namespace jsoncons {
 
     template<class Json>
-    struct json_type_traits<Json, ns::book>
+    struct json_type_traits<Json, ns::employee>
     {
         static bool is(const Json& j) noexcept
         {
-            return j.is_object() && j.contains("author") && 
-                   j.contains("title") && j.contains("price");
+            return j.is_object() && j.contains("employeeNo") && j.contains("name") && j.contains("title");
         }
-        static ns::book as(const Json& j)
+        static ns::employee as(const Json& j)
         {
-            ns::book val;
-            val.author = j["author"].template as<std::string>();
+            ns::employee val;
+            val.employeeNo = j["employeeNo"].template as<std::string>();
+            val.name = j["name"].template as<std::string>();
             val.title = j["title"].template as<std::string>();
-            val.price = j["price"].template as<double>();
             return val;
         }
-        static Json to_json(const ns::book& val)
+        static Json to_json(const ns::employee& val)
         {
             Json j;
-            j["author"] = val.author;
+            j["employeeNo"] = val.employeeNo;
+            j["name"] = val.name;
             j["title"] = val.title;
-            j["price"] = val.price;
             return j;
         }
     };
 } // namespace jsoncons
 
+JSONCONS_ACONS_TRAITS_DECL(ns::book,author,title,price);
+
+using namespace jsoncons;
+
 void book_extensibility_example()
 {
-    using jsoncons::json;
+    ns::book book1("Haruki Murakami", "Kafka on the Shore", 25.17);
 
-    ns::book book1{"Haruki Murakami", "Kafka on the Shore", 25.17};
-
-    json j = book1;
+    json j(book1);
 
     std::cout << "(1) " << std::boolalpha << j.is<ns::book>() << "\n\n";
 
     std::cout << "(2) " << pretty_print(j) << "\n\n";
 
-    ns::book temp = j.as<ns::book>();
-    std::cout << "(3) " << temp.author << "," 
-                        << temp.title << "," 
-                        << temp.price << "\n\n";
 
-    ns::book book2{"Charles Bukowski", "Women: A Novel", 12.0};
+    ns::book temp = j.as<ns::book>();
+    std::cout << "(3) " << temp.author() << "," 
+                        << temp.title() << "," 
+                        << temp.price() << "\n\n";
+#if 0
+
+    ns::book book2("Charles Bukowski", "Women: A Novel", 12.0);
 
     std::vector<ns::book> book_array{book1, book2};
 
@@ -81,14 +109,16 @@ void book_extensibility_example()
     std::cout << "(6)" << std::endl;
     for (auto b : book_list)
     {
-        std::cout << b.author << ", " 
-                  << b.title << ", " 
-                  << b.price << std::endl;
+        std::cout << b.author() << ", " 
+                  << b.title() << ", " 
+                  << b.price() << std::endl;
     }
+#endif
 }
 
 void book_extensibility_example2()
 {
+#if 0
     const std::string s = R"(
     [
         {
@@ -109,14 +139,15 @@ void book_extensibility_example2()
     std::cout << "(1)\n";
     for (const auto& item : book_list)
     {
-        std::cout << item.author << ", " 
-                  << item.title << ", " 
-                  << item.price << "\n";
+        std::cout << item.author() << ", " 
+                  << item.title() << ", " 
+                  << item.price() << "\n";
     }
 
     std::cout << "\n(2)\n";
     encode_json(book_list, std::cout, indenting::indent);
     std::cout << "\n\n";
+#endif
 }
 
 namespace ns {

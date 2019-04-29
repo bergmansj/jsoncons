@@ -29,16 +29,23 @@ namespace jsoncons_member_traits_decl_tests {
         std::string author_;
         std::string title_;
     public:
+        book2() = default;
+
         book2(const std::string& author, const std::string& title)
             : author_(author), title_(title)
         {
         }
-        std::string author() const
+
+        book2(const book2&) = default;
+
+        book2& operator=(const book2&) = default;
+
+        const std::string& author() const
         {
             return author_;
         }
 
-        std::string title() const
+        const std::string& title() const
         {
             return title_;
         }
@@ -75,6 +82,12 @@ TEST_CASE("JSONCONS_MEMBER_TRAITS_DECL tests")
         CHECK(j["author"].as<std::string>() == author);
         CHECK(j["title"].as<std::string>() == title);
         CHECK(j["price"].as<double>() == Approx(price).epsilon(0.001));
+
+        json j2(book);
+
+        CHECK(j == j2);
+
+        ns::book val = j.as<ns::book>();
     }
 
     SECTION("book2")
@@ -90,6 +103,12 @@ TEST_CASE("JSONCONS_MEMBER_TRAITS_DECL tests")
 
         CHECK(j["author"].as<std::string>() == author);
         CHECK(j["title"].as<std::string>() == title);
+
+        json j2(book2);
+
+        CHECK(j == j2);
+
+        ns::book2 val = j.as<ns::book2>();
     }
 }
 

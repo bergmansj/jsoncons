@@ -134,38 +134,20 @@ TEST_CASE("convert_tuple_test")
 }
 #endif
 
-namespace ns {
+namespace json_encode_and_decode_tests {
 
-struct book
-{
-    std::string author;
-    std::string title;
-    double price;
-
-    friend std::ostream& operator<<(std::ostream& os, const book& b)
+    struct book
     {
-        std::cout << "author: " << b.author << ", title: " << b.title << ", price: " << b.price << "\n";
-        return os;
-    }
-};
+        std::string author;
+        std::string title;
+        double price;
 
-} // namespace ns
-
-JSONCONS_MEMBER_TRAITS_DECL(ns::book,author,title,price);
-    
-TEST_CASE("book_conversion_test")
-{
-    ns::book book_list{"Haruki Murakami", "Kafka on the Shore", 25.17};
-
-    std::string s;
-    encode_json(book_list, s, indenting::indent);
-
-    std::cout << "s: " << s << "\n";
-
-}
-
-namespace ns {
-
+        friend std::ostream& operator<<(std::ostream& os, const book& b)
+        {
+            std::cout << "author: " << b.author << ", title: " << b.title << ", price: " << b.price << "\n";
+            return os;
+        }
+    };
     struct reputon
     {
         std::string rater;
@@ -225,7 +207,22 @@ namespace ns {
         };
     };
 
-} // namespace ns
+} // namespace json_encode_and_decode_tests
+
+namespace ns = json_encode_and_decode_tests;
+
+JSONCONS_MEMBER_TRAITS_DECL(ns::book,author,title,price);
+    
+TEST_CASE("book_conversion_test")
+{
+    ns::book book_list{"Haruki Murakami", "Kafka on the Shore", 25.17};
+
+    std::string s;
+    encode_json(book_list, s, indenting::indent);
+
+    std::cout << "s: " << s << "\n";
+
+}
 
 // Declare the traits. Specify which data members need to be serialized.
 JSONCONS_MEMBER_TRAITS_DECL(ns::reputon, rater, assertion, rated, rating);
