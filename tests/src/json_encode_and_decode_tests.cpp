@@ -11,6 +11,7 @@
 #include <cstdint>
 
 using namespace jsoncons;
+#if 0
 
 TEST_CASE("encode and decode json")
 {
@@ -132,6 +133,7 @@ TEST_CASE("convert_tuple_test")
         std::cout << pair.first << ": " << std::get<1>(pair.second) << std::endl;
     }
 }
+#endif
 #endif
 
 namespace ns {
