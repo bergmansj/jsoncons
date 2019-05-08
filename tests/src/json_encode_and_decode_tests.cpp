@@ -11,7 +11,6 @@
 #include <cstdint>
 
 using namespace jsoncons;
-#if 0
 
 TEST_CASE("encode and decode json")
 {
@@ -109,6 +108,7 @@ TEST_CASE("convert_array_test")
         CHECK(v[i] == result[i]);
     }
 }
+#if 0
 
 #if !(defined(__GNUC__) && __GNUC__ <= 5)
 TEST_CASE("convert_tuple_test")
