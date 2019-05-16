@@ -97,7 +97,7 @@ Returns the allocator associated with the json value.
     <td>Returns a "range" that supports a range-based for loop over the elements of a `json` array.</td> 
   </tr>
   <tr>
-    <td><a href="json/object_range.md">obect_range</a></td>
+    <td><a href="json/object_range.md">object_range</a></td>
     <td>Returns a "range" that supports a range-based for loop over the key-value pairs of a `json` object.</td> 
   </tr>
 </table>
